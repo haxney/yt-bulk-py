@@ -65,6 +65,14 @@ while videos:
     f = videos.pop()
     print "Uploading", os.path.basename(f), "..."
     entry = upload_one_video(f)
-    print "Uploaded with url: ", entry.GetMediaURL()
+    upload_status = yt_service.CheckUploadStatus(entry)
+
+    if upload_status is not None:
+        video_upload_state = upload_status[0]
+        detailed_message = upload_status[1]
+        print "Uploaded state:", video_upload_state, "Detailed status:", detailed_message, "URL:", entry.media.player.url
+    else:
+        print "URL:", entry.media.player.url
+
     with open(file_list, 'w+b') as l:
         l.write("\n".join(videos))
