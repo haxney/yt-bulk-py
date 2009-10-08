@@ -64,9 +64,9 @@ password = secret
         exit(1)
     return (config.get('user', 'email'), config.get('user', 'password'))
 
-def login(username, password):
-    yt_service.email = config.get('user', 'email')
-    yt_service.password = config.get('user', 'password')
+def login(email, password):
+    yt_service.email = email
+    yt_service.password = password
     yt_service.source = 'my-example-application'
     yt_service.auth_service_url = 'https://www.google.com/youtube/accounts/ClientLogin'
     yt_service.developer_key = 'AI39si573dorSANLKW4umMAT7awL4jVnlZSfI_J-U5kFvUnNLNFFruGmIRxutNY4UTjP4y_Qx0mZYTkH1b_bocV4g1rJUr3Z4g'
