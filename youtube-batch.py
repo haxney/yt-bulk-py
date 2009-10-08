@@ -44,8 +44,6 @@ if not 'email' in config.options('user') and 'password' in config.options('user'
     exit(1)
 
 yt_service = gdata.youtube.service.YouTubeService()
-#yt_service.debug = True
-#yt_service.account_type = 'GOOGLE'
 yt_service.email = config.get('user', 'email')
 yt_service.password = config.get('user', 'password')
 yt_service.source = 'my-example-application'
