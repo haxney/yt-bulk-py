@@ -124,6 +124,10 @@ file_list = sys.argv[-1]
 with open(file_list) as f:
     videos = map(str.strip, f.readlines())
 
+# Log in with the username and password from the configuration file.
+login(*load_config())
+
+# Upload the videos.
 while videos:
     f = videos.pop()
     print "Uploading", os.path.basename(f), "..."
