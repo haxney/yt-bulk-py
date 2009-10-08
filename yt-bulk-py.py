@@ -25,7 +25,7 @@ from glob import glob
 import gdata.youtube
 import gdata.youtube.service
 import os.path
-from sys import argv
+import sys
 import xdg.BaseDirectory as bd
 import ConfigParser
 
@@ -115,11 +115,11 @@ def print_upload_status(status):
     else:
         print "URL:", entry.media.player.url
 
-if len(argv) != 2:
+if len(sys.argv) != 2:
     print "Usage: yt-bulk-py video_list"
     exit(1)
 
-file_list = argv[-1]
+file_list = sys.argv[-1]
 
 with open(file_list) as f:
     videos = map(str.strip, f.readlines())
