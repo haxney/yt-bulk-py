@@ -51,24 +51,20 @@ def media_group(filename):
         )
     return my_media_group
 
-def glob_videos(directory, extensions):
-    files = []
-    for ext in extensions:
-        files += glob(os.path.join(directory, "*.%s" % ext))
-    return files
-
 def upload_one_video(filename):
     video_entry = gdata.youtube.YouTubeVideoEntry(media=media_group(filename))
     new_entry = yt_service.InsertVideoEntry(video_entry, filename)
     return new_entry
 
+file_list = argv[-1]
 
-video_extensions = ["mpg", "mpeg", "avi", "mp4"]
-directory = argv[-1]
+with open(file_list) as f:
+    videos = f.readlines()
 
-videos = glob_videos(directory, video_extensions)
-
-for f in videos:
+while videos:
+    f = videos.pop()
     print "Uploading ", os.path.basename(f), "..."
     entry = upload_one_video(f)
     print "Uploaded with url: ", entry.GetMediaURL()
+    with open(file_list, 'w+b') as l:
+        l.write("\n".join(videos))
