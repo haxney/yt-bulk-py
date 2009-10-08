@@ -136,6 +136,8 @@ while videos:
         print_upload_status(yt_service.CheckUploadStatus(entry))
     except Exception as e:
         print "Exception while uploading:", e, "retrying..."
+    except gdata.youtube.service.YouTubeError as e:
+        print "YouTubeError while uploading:", e, "retrying..."
     else:
         videos.pop()
         with open(file_list, 'w+b') as l:
