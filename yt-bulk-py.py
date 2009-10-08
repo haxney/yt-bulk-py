@@ -108,9 +108,9 @@ def upload_one_video(filename):
     return new_entry
 
 def print_upload_status(status):
-    if upload_status is not None:
-        video_upload_state = upload_status[0]
-        detailed_message = upload_status[1]
+    if status is not None:
+        video_upload_state = status[0]
+        detailed_message = status[1]
         print "Uploaded state:", video_upload_state, "Detailed status:", detailed_message, "URL:", entry.media.player.url
     else:
         print "URL:", entry.media.player.url
