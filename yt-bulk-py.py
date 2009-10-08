@@ -129,10 +129,14 @@ login(*load_config())
 
 # Upload the videos.
 while videos:
-    f = videos.pop()
+    f = videos[-1]
     print "Uploading", os.path.basename(f), "..."
     entry = upload_one_video(f)
-    print_upload_status(yt_service.CheckUploadStatus(entry))
-
-    with open(file_list, 'w+b') as l:
-        l.write("\n".join(videos))
+    try:
+        print_upload_status(yt_service.CheckUploadStatus(entry))
+    except Exception as e:
+        print "Exception while uploading:", e, "retrying..."
+    else:
+        videos.pop()
+        with open(file_list, 'w+b') as l:
+            l.write("\n".join(videos))
