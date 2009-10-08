@@ -8,7 +8,8 @@ import os.path
 from sys import argv
 
 if len(argv) != 2:
-    print "Wrong number of arguments."
+    print "Usage: yt-bulk-py video_list"
+    exit(1)
     exit(1)
 
 yt_service = gdata.youtube.service.YouTubeService()
