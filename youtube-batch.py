@@ -6,17 +6,48 @@ import gdata.youtube
 import gdata.youtube.service
 import os.path
 from sys import argv
+import xdg.BaseDirectory as bd
+import ConfigParser
 
 if len(argv) != 2:
     print "Usage: yt-bulk-py video_list"
     exit(1)
+
+resource_name = 'yt-bulk-py'
+
+if not bd.load_first_config(resource_name):
+    sys.stderr.write('Creating config directory: ' + bd.save_config_path(resource_name))
+
+conf_dir = bd.load_first_config(resource_name)
+conf_file = os.path.join(conf_dir, 'config')
+
+conf_skel = """# Configuration file for yt-bulk-py
+
+# Account information for the user doing the uploading.
+[user]
+email = address@example.com
+password = secret"""
+
+if not os.path.isfile(conf_file):
+    with open(conf_file, 'w+b') as f:
+        f.write(conf_skel)
+
+config = ConfigParser.ConfigParser()
+config.read(conf_file)
+
+if not 'user' in config.sections():
+    sys.stderr.write('Error: No [user] section in config file.')
+    exit(1)
+
+if not 'email' in config.options('user') and 'password' in config.options('user'):
+    sys.stderr.write('Error: Missing "email" or "password" options in config file.')
     exit(1)
 
 yt_service = gdata.youtube.service.YouTubeService()
 #yt_service.debug = True
-yt_service.email = 'brown.ballroom@gmail.com'
-yt_service.password = 'secret'
 #yt_service.account_type = 'GOOGLE'
+yt_service.email = config.get('user', 'email')
+yt_service.password = config.get('user', 'password')
 yt_service.source = 'my-example-application'
 yt_service.auth_service_url = 'https://www.google.com/youtube/accounts/ClientLogin'
 yt_service.developer_key = 'AI39si573dorSANLKW4umMAT7awL4jVnlZSfI_J-U5kFvUnNLNFFruGmIRxutNY4UTjP4y_Qx0mZYTkH1b_bocV4g1rJUr3Z4g'
