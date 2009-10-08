@@ -63,7 +63,7 @@ with open(file_list) as f:
 
 while videos:
     f = videos.pop()
-    print "Uploading ", os.path.basename(f), "..."
+    print "Uploading", os.path.basename(f), "..."
     entry = upload_one_video(f)
     print "Uploaded with url: ", entry.GetMediaURL()
     with open(file_list, 'w+b') as l:
