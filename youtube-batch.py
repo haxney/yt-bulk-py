@@ -59,7 +59,7 @@ def upload_one_video(filename):
 file_list = argv[-1]
 
 with open(file_list) as f:
-    videos = f.readlines()
+    videos = map(str.strip, f.readlines())
 
 while videos:
     f = videos.pop()
