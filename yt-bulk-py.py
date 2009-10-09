@@ -131,8 +131,8 @@ login(*load_config())
 while videos:
     f = videos[-1]
     print "Uploading", os.path.basename(f), "..."
-    entry = upload_one_video(f)
     try:
+        entry = upload_one_video(f)
         print_upload_status(yt_service.CheckUploadStatus(entry))
     except Exception as e:
         print "Exception while uploading:", e, "retrying..."
