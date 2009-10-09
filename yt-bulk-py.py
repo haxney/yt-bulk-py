@@ -75,17 +75,25 @@ def login(email, password):
 
     print "logged in"
 
-def local_meta_info(basepath, name):
-    """Load the contents of dirname(<basepath>)/<name>."""
-    meta_path = os.path.join(os.path.dirname(basepath), name)
-    with open(meta_path) as f:
-        meta_text = f.read()
-    return meta_text
+def local_meta_info(basepath):
+    """Load the contents of dirname(<basepath>)/config.yt-bulk.
+
+Expects a [video-info] section and options "description", "tags", and "category"."""
+    config = ConfigParser.ConfigParser()
+    meta_path = os.path.join(os.path.dirname(basepath), 'config.yt-bulk')
+    config.read(meta_path)
+
+    try:
+        desc = config.get('video-info', 'description')
+        tags = config.get('video-info', 'tags')
+        category = config.get('video-info', 'category')
+    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError) as e:
+        sys.stderr.write("Missing required section or option: %s" % e)
+
+    return (desc, tags, category)
 
 def media_group(filename):
-    desc_text = local_meta_info(filename, 'description')
-    tags = local_meta_info(filename, 'tags')
-    category = local_meta_info(filename, 'category')
+    desc_text, tags, category = local_meta_info(filename)
     # Get the basename without the file extension.
     title = os.path.splitext(os.path.basename(filename))[0]
 
